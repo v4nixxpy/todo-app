@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ title }}</title>
+    {% if custom_css %}
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/' + custom_css) }}"
+    />
+    {% endif %}
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/base.css') }}"
+    />
+  </head>
+  <body>
+    <div class="page-wrapper">
+      <!-- ── App Header ─────────────────────────────────────── -->
+      <header class="app-header">
+        <h1 class="heading">Todo App</h1>
+        <div
+          style="font-size: 11px; color: var(--text3); font-family: var(--mono)"
+        >
+          {{ dateNow }}
+        </div>
+      </header>
+
+      <!-- ── Add Task Form ──────────────────────────────────── -->
+      <div class="form-card">
+        <div class="form-card-title">New Task</div>
+        <form action="{{ url_for('home') }}" method="post">
+          <!-- Title & Description -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="title">Title</label>
+              <input
+                type="text"
+                name="title"
+                id="title"
+                placeholder="Task name…"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="description">Description</label>
+              <input
+                type="text"
+                name="description"
+                id="description"
+                placeholder="Short description…"
+                required
+              />
+            </div>
+          </div>
+
+          <!-- Status -->
+          <div class="form-group">
+            <label>Status</label>
+            <div class="radio-group">
+              <label class="radio-option">
+                <input
+                  type="radio"
+                  name="status"
+                  id="pending"
+                  value="pending"
+                  required
+                />
+                <span>⏳ Pending</span>
+              </label>
+              <label class="radio-option">
+                <input
+                  type="radio"
+                  name="status"
+                  id="completed"
+                  value="completed"
+                />
+                <span>✅ Completed</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Priority & Tag row -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="priority">Priority</label>
+              <select
+                name="priority"
+                id="priority"
+                class="select priority-select"
+              >
+                <option value="Low">🟢 Low</option>
+                <option value="Medium" selected>🟡 Medium</option>
+                <option value="High">🔴 High</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="Tag">Tag</label>
+              <select name="Tag" id="Tag" class="select tag-select">
+                {% for tag in Tags %}
+                <option value="{{ tag }}">{{ tag }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <input
+            type="text"
+            name="date"
+            id="date"
+            hidden
+            value="{{ dateNow }}"
+          />
+          <input type="submit" value="＋  Add Task" />
+        </form>
+      </div>
+
+      <!-- ── Todo List ──────────────────────────────────────── -->
+      {% block content %} {% endblock %}
+    </div>
+  </body>
+</html>

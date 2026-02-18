@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ title }}</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/base.css') }}"
+    />
+  </head>
+  <body>
+    <div class="page-wrapper" style="max-width: 640px">
+      <!-- Header -->
+      <header class="app-header">
+        <h1 class="heading">Update Task</h1>
+        <a
+          href="{{ url_for('home') }}"
+          style="
+            font-size: 13px;
+            color: var(--text2);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.2s;
+          "
+          onmouseover="this.style.color = 'var(--amber)'"
+          onmouseout="this.style.color = 'var(--text2)'"
+        >
+          ← Back
+        </a>
+      </header>
+
+      <!-- Form Card -->
+      <div class="form-card">
+        <div class="form-card-title">Edit Task Details</div>
+
+        <form action="{{ url_for('update', id=id) }}" method="POST">
+          <!-- Title & Description -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="title">Title</label>
+              <input
+                type="text"
+                name="title"
+                id="title"
+                value="{{ title_value }}"
+                placeholder="Task name…"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="description">Description</label>
+              <input
+                type="text"
+                name="description"
+                id="description"
+                value="{{ description_value }}"
+                placeholder="Short description…"
+                required
+              />
+            </div>
+          </div>
+
+          <!-- Status -->
+          <div class="form-group">
+            <label>Status</label>
+            <div class="radio-group">
+              <label class="radio-option">
+                <input
+                  type="radio"
+                  name="status"
+                  id="pending"
+                  value="pending"
+                  required
+                  {%if
+                  status_value=="pending"
+                  %}checked{%endif%}
+                />
+                <span>⏳ Pending</span>
+              </label>
+              <label class="radio-option">
+                <input
+                  type="radio"
+                  name="status"
+                  id="completed"
+                  value="completed"
+                  {%
+                  if
+                  status_value=="completed"
+                  %}checked{%
+                  endif
+                  %}
+                />
+                <span>✅ Completed</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Priority & Tag -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="priority">Priority</label>
+              <select
+                name="priority"
+                id="priority"
+                class="select priority-select"
+              >
+                <option
+                  value="Low"
+                  {%
+                  if
+                  priority_value=="Low"
+                  %}selected{%
+                  endif
+                  %}
+                >
+                  🟢 Low
+                </option>
+                <option
+                  value="Medium"
+                  {%
+                  if
+                  priority_value=="Medium"
+                  %}selected{%
+                  endif
+                  %}
+                >
+                  🟡 Medium
+                </option>
+                <option
+                  value="High"
+                  {%
+                  if
+                  priority_value=="High"
+                  %}selected{%
+                  endif
+                  %}
+                >
+                  🔴 High
+                </option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="Tag">Tag</label>
+              <select name="Tag" id="Tag" class="select tag-select">
+                {% for tag in Tags %}
+                <option value="{{ tag }}">{{ tag }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <input
+            type="text"
+            name="date"
+            id="date"
+            hidden
+            value="{{ dateNow }}"
+          />
+          <input type="submit" value="💾  Save Changes" />
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
